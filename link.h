@@ -7,7 +7,7 @@
 class Link {
 public:
 	Link();
-	Link(int length, Joint joint);
+	Link(int length, Joint* joint);
 	Link(const Link & link);
 	Link & operator=(const Link & link);
 	Point computeB();
@@ -17,7 +17,7 @@ private:
 	Point _a;
 	Point _b;
 	int _length;
-	Joint _joint;
+	Joint* _joint;
 };
 
 #endif

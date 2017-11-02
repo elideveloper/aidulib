@@ -1,12 +1,10 @@
 #include "link.h"
 
-#include <cmath>
-#include <iostream>
 Link::Link()
 {
 }
 
-Link::Link(int length, Joint joint) : _length(length), _joint(joint)
+Link::Link(int length, Joint* joint) : _length(length), _joint(joint)
 {
 }
 
@@ -30,6 +28,8 @@ Link & Link::operator=(const Link & link)
 
 Point Link::computeB()
 {
+	// this->_joint.computeRelativeB(this->length)	// joint computes automatically depending on type of joint
+
 	double projectionXY = cos(this->_joint.twistAngle) * this->_length;
 	double z = sin(this->_joint.twistAngle) * this->_length;
 	double y = cos(this->_joint.rotationAngle) * projectionXY;
@@ -41,6 +41,8 @@ Point Link::computeB()
 
 Point Link::computeB(const Link & prevLink)
 {
+	// this->_joint.computeRelativeB(this->length)
+
 	this->_joint.twistAngle = this->_joint.twistAngle + prevLink._joint.twistAngle;
 	this->_joint.rotationAngle = this->_joint.rotationAngle + prevLink._joint.rotationAngle;
 	double projectionXY = cos(this->_joint.twistAngle) * this->_length;

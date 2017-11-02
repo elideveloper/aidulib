@@ -4,6 +4,8 @@
 
 #include "manipulator.h"
 
+// 
+
 int main() {
 
 	clock_t tStart = clock();
@@ -12,9 +14,9 @@ int main() {
 	Range r(PIdiv2, -PIdiv2);
 	Link links[numLinks];
 	
-	links[0] = Link(10, Joint(r, r, PIdiv4, PIdiv4));
-	links[1] = Link(10, Joint(r, r, PIdiv4, PIdiv4));
-	links[2] = Link(10, Joint(r, r, PIdiv4, 0));
+	links[0] = Link(10, Joint(r, PIdiv4));
+	links[1] = Link(10, Joint(r, PIdiv4));
+	links[2] = Link(10, Joint(r, 0.0));
 
 	Manipulator manip(links, numLinks);
 
