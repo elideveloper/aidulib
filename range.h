@@ -3,7 +3,9 @@
 
 class Range {
 public:
-
+	Range();
+	Range(double max, double min);
+	Range(const Range & range);
 private:
 	double _min;
 	double _max;
