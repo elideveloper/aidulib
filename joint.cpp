@@ -6,45 +6,50 @@ Joint::Joint()
 {
 }
 
-Joint::Joint(Range angleRange, double angle = 0.0) : _angleRange(angleRange), angle(angle)
+Joint::Joint(Range angleRange, double angle) : _angleRange(angleRange), _angle(angle)
 {
+}
+
+double Joint::getAngle() const
+{
+	return this->_angle;
 }
 
 RotationJoint::RotationJoint() : Joint()
 {
 }
 
-RotationJoint::RotationJoint(Range angleRange, double angle = 0.0) : Joint(angleRange, angle)
+RotationJoint::RotationJoint(Range angleRange, double angle) : Joint(angleRange, angle)
 {
 }
 
-Point RotationJoint::computeRelativeB(double sumPrevAngles, int length)
+void RotationJoint::changeAngles(Angles & angles)
 {
-	return Point(0.0, cos(this->_angle + sumPrevAngles) * length, sin(this->_angle + sumPrevAngles) * length);
+	angles.rotationAngle += this->_angle;
 }
 
 TwistingJoint::TwistingJoint() : Joint()
 {
 }
 
-TwistingJoint::TwistingJoint(Range angleRange, double angle = 0.0) : Joint(angleRange, angle)
+TwistingJoint::TwistingJoint(Range angleRange, double angle) : Joint(angleRange, angle)
 {
 }
 
-Point TwistingJoint::computeRelativeB(double sumPrevAngles, int length)
+void TwistingJoint::changeAngles(Angles & angles)
 {
-	return Point(sin(this->_angle + sumPrevAngles) * length, cos(this->_angle + sumPrevAngles) * length, 0.0);
+	angles.twistingAngle += this->_angle;
 }
 
 RevolutionJoint::RevolutionJoint() : Joint()
 {
 }
 
-RevolutionJoint::RevolutionJoint(Range angleRange, double angle = 0.0) : Joint(angleRange, angle)
+RevolutionJoint::RevolutionJoint(Range angleRange, double angle) : Joint(angleRange, angle)
 {
 }
 
-Point RevolutionJoint::computeRelativeB(double sumPrevAngles, int length)
+void RevolutionJoint::changeAngles(Angles & angles)
 {
-	// TODO
+	angles.revolutionAngle += this->_angle;
 }
