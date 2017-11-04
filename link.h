@@ -2,7 +2,6 @@
 #define LINK_H
 
 #include "joint.h"
-#include "point.h"
 
 class Link {
 public:
@@ -15,6 +14,8 @@ public:
 	void setA(Point a);
 	void setAngles(Angles angles);
 	Angles getAngles() const;
+	void randomizeAngle();
+	void swapJoints(Link & link);
 private:
 	Point _a;
 	Point _b;

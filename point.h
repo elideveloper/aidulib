@@ -10,6 +10,8 @@ public:
 	double x;
 	double y;
 	double z;
+	double distanceTo(double x, double y, double z) const;
+	double distanceTo(const Point & point) const;
 private:
 };
 

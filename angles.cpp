@@ -1,8 +1,8 @@
 #include "angles.h"
 
-Angles::Angles()
+/*Angles::Angles()
 {
-}
+}*/
 
 Angles::Angles(double rotationAngle, double twistingAngle, double revolutionAngle) 
 	: rotationAngle(rotationAngle), twistingAngle(twistingAngle), revolutionAngle(revolutionAngle)
