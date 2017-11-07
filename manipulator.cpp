@@ -1,15 +1,15 @@
-#include <Arduino.h>
-
 #include "manipulator.h"
 
 #include "ga_params.h"
-//#include "utility.h" // DELETE
-Manipulator::Manipulator(Link* links, int numLinks) : _links(links), _numLinks(numLinks)
+#include "utility.h"
+
+Manipulator::Manipulator(Link* links, int numLinks, Angles startingPos) : _links(links), _numLinks(numLinks), _startingPosition(startingPos)
 {
 }
 
 Point Manipulator::computePosition()
 {
+	this->_links[0].setAngles(this->_startingPosition);			// set starting position for first link
 	Point p = this->_links[0].computeB();
 	for (register int i = 1; i < this->_numLinks; i++) {
 		this->_links[i].setA(p);
@@ -23,7 +23,7 @@ void Manipulator::reachPosition(Point dest)
 {
 	Link** gen = this->createGeneration();
 	for (register int n = 0; n < maxIterations; n++) {
-		this->sortGeneration(gen);
+		this->sortGeneration(gen, dest);
 		for (register int i = 0; i < numCrossover; i += 2) {
 			this->cross(gen[numLeaveBest + i], gen[numLeaveBest + i + 1]);
 		}
@@ -47,9 +47,11 @@ void Manipulator::reachPosition(Point dest)
 	delete[] gen;
 }
 
-void Manipulator::setStartingPosition(Angles angles)
+double * Manipulator::getJointAngles() const
 {
-	this->_links[0].setAngles(angles);
+	double* angles = new double[this->_numLinks];
+	for (int i = 0; i < this->_numLinks; i++) angles[i] = this->_links[i].getTurn();
+	return angles;
 }
 
 Link** Manipulator::createGeneration()
@@ -65,9 +67,35 @@ Link** Manipulator::createGeneration()
 	return generation;
 }
 
-void Manipulator::sortGeneration(Link** generation)
+void Manipulator::sortGeneration(Link** generation, Point dest)
 {
+	int maxError = 0;
+	for (register int i = 0; i < this->_numLinks; i++) {
+		maxError += this->_links[i].getLength();
+	}
+	maxError *= 2;
+	Link* currLinks = this->_links;
+	Link** errorsArr = new Link*[maxError]();
+	Point pos;
+	double error = 0.0;
+	for (register int i = 0; i < numIndividuals; i++) {
+		this->_links = generation[i];
+		error = computeError(dest);
+		int errIndex = (int)error;
+		while (errorsArr[errIndex] != nullptr) errIndex++;
+		errorsArr[errIndex] = generation[i];
+	}
 
+	int j = 0;
+	for (register int i = 0; i < maxError; i++) {
+		if (errorsArr[i] != nullptr) {
+			generation[j] = errorsArr[i];
+			if (j == numIndividuals - 1) break;
+			j++;
+		}
+	}
+	this->_links = currLinks;
+	delete[] errorsArr;
 }
 
 void Manipulator::takeBest(Link** generation, Point dest)
@@ -80,8 +108,7 @@ void Manipulator::takeBest(Link** generation, Point dest)
 
 	for (register int i = 0; i < numIndividuals; i++) {
 		this->_links = generation[i];
-		pos = this->computePosition();
-		error = pos.distanceTo(dest);
+		error = computeError(dest);
 		if (error < minError) {
 			minError = error;
 			bestIndIndex = i;
@@ -97,7 +124,7 @@ void Manipulator::takeBest(Link** generation, Point dest)
 
 void Manipulator::cross(Link* dad, Link* mom)
 {
-	for (register int j = 0; j < this->_numLinks; j += 2) {
+	for (register int j = 1; j < this->_numLinks; j += 2) {
 		dad[j].swapJoints(mom[j]);
 	}
 }
@@ -105,4 +132,20 @@ void Manipulator::cross(Link* dad, Link* mom)
 void Manipulator::tryMutate(Link* individual, double prob)
 {
 	individual[random(this->_numLinks)].randomizeAngle();
+}
+
+// reimplement, introduce obstacles
+double Manipulator::computeError(Point dest)
+{
+	Point pos = this->computePosition();
+	for (register int i = 0; i < this->_numLinks; i++) {
+		if (this->_links[i].isIntersectsHorizPlane(0.0)) {
+			int maxError = 0;
+			for (register int j = 0; j < this->_numLinks; j++) {
+				maxError += this->_links[j].getLength();
+			}
+			return maxError;
+		}
+	}
+	return pos.distanceTo(dest);
 }

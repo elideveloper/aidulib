@@ -51,6 +51,16 @@ Point Link::computeB(const Link & prevLink)
 	return this->_b;
 }
 
+int Link::getLength() const
+{
+	return this->_length;
+}
+
+double Link::getTurn() const
+{
+	return this->_joint->getAngle();
+}
+
 void Link::setA(Point a)
 {
 	this->_a = a;
@@ -76,4 +86,9 @@ void Link::swapJoints(Link & link)
 	Joint* tmp = link._joint;
 	link._joint = this->_joint;
 	this->_joint = tmp;
+}
+
+bool Link::isIntersectsHorizPlane(double z)
+{
+	return ((z - this->_a.z) * (z - this->_b.z) < 0.0);
 }

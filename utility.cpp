@@ -1,6 +1,6 @@
 #include "utility.h"
 
-//#include <random>// DELETE
+#include <random>
 
 double radianToDegree(double angle) {
 	return angle * 180.0 / PI_;
@@ -9,8 +9,11 @@ double radianToDegree(double angle) {
 double degreeToRadian(double angle) {
 	return angle / 180.0 * PI_;
 }
-// DELETE
-/*
+
 int random(int max) {
 	return rand() % max;
-}*/
+}
+
+int random(int min, int max) {
+	return (rand() % (max - min)) + min;
+}

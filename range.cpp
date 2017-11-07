@@ -1,7 +1,5 @@
-#include <Arduino.h>
-
 #include "range.h"
-//#include <random>// DELETE
+#include "utility.h"
 Range::Range()
 {
 }
@@ -15,12 +13,8 @@ Range::Range(const Range & range)
 	this->_max = range._max;
 	this->_min = range._min;
 }
-/*
-int random(int min, int max) {
-	return rand() % (max + abs(min)) + min;
-}*/
 
 double Range::getRandom()
 {
-	return random(this->_min * 1000, this->_max * 1000) / 1000.0;
+	return random(this->_min * 100, this->_max * 100) / 100.0;
 }
