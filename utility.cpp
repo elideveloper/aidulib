@@ -1,11 +1,11 @@
 #include "utility.h"
 
 int radianToDegree(double angle) {
-	return angle * 180 / 3.14;
+	return angle * 180 / PI;
 }
 
 double degreeToRadian(int angle) {
-	return angle / 180.0 * 3.14;
+	return angle / 180.0 * PI;
 }
 /*
 int random(int max) {

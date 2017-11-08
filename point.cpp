@@ -28,10 +28,10 @@ Point & Point::operator=(const Point & point)
 
 int Point::distanceTo(int x, int y, int z) const
 {
-	return sqrt((x - this->x)*(x - this->x) + (y - this->y)*(y - this->y) + (z - this->z)*(z - this->z));
+	return sqrt((long)(x - this->x)*(x - this->x) + (long)(y - this->y)*(y - this->y) + (long)(z - this->z)*(z - this->z));
 }
 
 int Point::distanceTo(const Point & point) const
 {
-	return sqrt((point.x - this->x)*(point.x - this->x) + (point.y - this->y)*(point.y - this->y) + (point.z - this->z)*(point.z - this->z));
+	return sqrt((long)(point.x - this->x)*(point.x - this->x) + (long)(point.y - this->y)*(point.y - this->y) + (long)(point.z - this->z)*(point.z - this->z));
 }

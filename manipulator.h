@@ -15,7 +15,6 @@ private:
 	Angles _startingPosition;									// starting angles of first link
 	Link** createGeneration();
 	void sortGeneration(Link** generation, Point dest);
-	void takeBest(Link** generation, Point dest);
 	void cross(Link* dad, Link* mom);
 	void tryMutate(Link* individual, int prob);
 	int computeError(Point dest);

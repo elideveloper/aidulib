@@ -1,10 +1,12 @@
 #ifndef GA_PARAMS_H
 #define GA_PARAMS_H
 
-const int numIndividuals = 2;
-const int mutateProb = 5;
-const int numLeaveBest = 2;
-const int numCrossover = 2;
-const int maxIterations = 10;
+#include <Arduino.h>
+
+const byte numIndividuals = 6;
+const byte mutateProb = 5;
+const byte numLeaveBest = 2;
+const byte numCrossover = 2;
+const int maxIterations = 1000;
 
 #endif

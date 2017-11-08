@@ -1,6 +1,8 @@
 #ifndef LINK_H
 #define LINK_H
 
+#include <Arduino.h>
+
 #include "joint.h"
 
 class Link {
