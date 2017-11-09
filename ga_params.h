@@ -3,10 +3,10 @@
 
 #include <Arduino.h>
 
-const byte numIndividuals = 6;
+const byte numIndividuals = 8;
 const byte mutateProb = 5;
 const byte numLeaveBest = 2;
-const byte numCrossover = 2;
-const int maxIterations = 1000;
+const byte numCrossover = 4;
+const int maxIterations = 400;
 
 #endif

@@ -76,20 +76,21 @@ void Manipulator::sortGeneration(Link** generation, Point dest)
 	int errCurr = 0;
 	Link* tmpLink = nullptr;
 
-	this->_links = generation[numIndividuals - 1];
-	errPrev = this->computeError(dest);
-
 	// part of bubble sort, best one from the prev comparison goes to the top
-	for (register int i = numIndividuals - 2; i >= 0; i--) {
-		this->_links = generation[i];
-		errCurr = this->computeError(dest);
-		if (errCurr > errPrev) {
-			tmpLink = generation[i];
-			generation[i] = generation[i + 1];
-			generation[i + 1] = tmpLink;
-		}
-		else {
-			errPrev = errCurr;
+	for (register int j = 0; j < numIndividuals - 1; j++) {
+		this->_links = generation[numIndividuals - 1];
+		errPrev = this->computeError(dest);
+		for (register int i = numIndividuals - 2; i >= j; i--) {
+			this->_links = generation[i];
+			errCurr = this->computeError(dest);
+			if (errCurr > errPrev) {
+				tmpLink = generation[i];
+				generation[i] = generation[i + 1];
+				generation[i + 1] = tmpLink;
+			}
+			else {
+				errPrev = errCurr;
+			}
 		}
 	}
 	this->_links = currLinks;
